@@ -1,14 +1,14 @@
-class GenreModel {
+import 'package:equatable/equatable.dart';
+
+class GenreModel extends Equatable {
   final int malId;
   final String type;
   final String name;
-  final String url;
 
   GenreModel({
     required this.malId,
     required this.type,
     required this.name,
-    required this.url,
   });
 
   factory GenreModel.fromJson(Map<String, dynamic> json) {
@@ -16,7 +16,18 @@ class GenreModel {
       malId: json['mal_id']?.toInt() ?? 0,
       type: json['type'] ?? '',
       name: json['name'] ?? '',
-      url: json['url'] ?? '',
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'malId': malId,
+      'type': type,
+      'name': name,
+    };
+  }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [malId, type, name];
 }

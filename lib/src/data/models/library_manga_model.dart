@@ -1,11 +1,13 @@
-class LibraryManga {
+import 'package:equatable/equatable.dart';
+
+class LibraryManga extends Equatable {
   final int malId;
   final String imageUrl;
   final String title;
   final String synopsis;
   final String userId;
 
-  LibraryManga(
+  const LibraryManga(
       {required this.malId,
       required this.imageUrl,
       required this.title,
@@ -30,4 +32,7 @@ class LibraryManga {
       'user_id': userId,
     };
   }
+
+  @override
+  List<Object?> get props => [malId];
 }

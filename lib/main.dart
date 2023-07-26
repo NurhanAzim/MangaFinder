@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:manga_finder/src/blocs/Auth/authentication_bloc.dart';
+import 'package:manga_finder/src/blocs/library_mangas/library_manga_bloc.dart';
+import 'package:manga_finder/src/blocs/library_mangas/library_manga_event.dart';
 import 'package:manga_finder/src/blocs/manga_character/manga_character_bloc.dart';
 import 'package:manga_finder/src/blocs/manga_details/manga_details_bloc.dart';
 import 'package:manga_finder/src/blocs/manga_images/manga_images_bloc.dart';
@@ -44,7 +46,7 @@ void main() async {
           create: (_) => AuthenticationBloc(),
         ),
         BlocProvider<PopularMangaBloc>(
-          create: (_) => get_it.gI()..add(LoadPopularMangaEvent()),
+          create: (_) => get_it.gI()..add(LoadMorePopularMangaEvent()),
         ),
         BlocProvider<TrendingMangaBloc>(
           create: (_) => get_it.gI()..add(LoadTrendingMangaEvent()),
@@ -63,6 +65,9 @@ void main() async {
         BlocProvider<MangaCharacterBloc>(
           create: (_) => get_it.gI<MangaCharacterBloc>(),
         ),
+        BlocProvider<LibraryMangaBloc>(
+            create: (_) =>
+                get_it.gI<LibraryMangaBloc>()..add(LibraryMangaInitialEvent())),
       ],
       child: const MangaFinder(),
     ),

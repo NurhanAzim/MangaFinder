@@ -64,39 +64,94 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             color: AppColors.electricRuby),
-                        child: IconButton(
-                            onPressed: () {
-                              String userId =
-                                  Supabase.instance.client.auth.currentUser!.id;
-                              LibraryManga manga = LibraryManga(
-                                malId: succesState.manga.malId,
-                                imageUrl: succesState.manga.imageUrl,
-                                title: succesState.manga.title,
-                                synopsis: succesState.manga.synopsis,
-                                userId: userId,
-                              );
+                        child: FutureBuilder<bool>(
+                          future: DatabaseService().isMangaInLibrary(widget.id),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              // Loading state
+                              return const CircularProgressIndicator();
+                            } else {
+                              // Success state
+                              bool isInLibrary = snapshot.data ?? false;
+                              return Card(
+                                // Card widget code here
+                                child: IconButton(
+                                  onPressed: () async {
+                                    String userId = Supabase
+                                        .instance.client.auth.currentUser!.id;
+                                    int malId = succesState.manga.malId;
 
-                              DatabaseService()
-                                  .addManga(manga: manga)
-                                  .then((_) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Manga Added to Library!'),
-                                  ),
-                                );
-                              }).catchError((error) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content:
-                                        Text('Failed to Add Manga: $error'),
-                                  ),
-                                );
-                              });
-                            },
-                            icon: const Icon(
-                              Icons.favorite,
-                              color: AppColors.platinumGray,
-                            )),
+                                    bool isInLibrary = await DatabaseService()
+                                        .isMangaInLibrary(malId);
+
+                                    if (isInLibrary) {
+                                      // Manga is already in the library, so delete it
+                                      DatabaseService()
+                                          .deleteManga(malId)
+                                          .then((_) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                                'Manga Removed from Library!'),
+                                          ),
+                                        );
+                                      }).catchError((error) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                                'Failed to Remove Manga: $error'),
+                                          ),
+                                        );
+                                      });
+                                    } else {
+                                      // Manga is not in the library, so add it
+                                      LibraryManga manga = LibraryManga(
+                                        malId: widget.id,
+                                        imageUrl: succesState.manga.imageUrl,
+                                        title: succesState.manga.title,
+                                        synopsis: succesState.manga.synopsis,
+                                        userId: userId,
+                                      );
+
+                                      DatabaseService()
+                                          .addManga(manga: manga)
+                                          .then((_) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content:
+                                                Text('Manga Added to Library!'),
+                                          ),
+                                        );
+                                      }).catchError((error) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                                'Failed to Add Manga: $error'),
+                                          ),
+                                        );
+                                      });
+                                    }
+                                    setState(() {});
+                                  },
+                                  icon: isInLibrary
+                                      ? const Icon(
+                                          Icons.favorite,
+                                          color: Colors.red,
+                                        )
+                                      : const Icon(
+                                          Icons.favorite_border,
+                                          color: AppColors.platinumGray,
+                                        ),
+                                ),
+                              );
+                            }
+                          },
+                        ),
                       ),
                       const SizedBox(
                         width: 5,

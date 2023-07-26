@@ -1,6 +1,7 @@
+import 'package:equatable/equatable.dart';
 import 'package:manga_finder/src/data/models/genre_model.dart';
 
-class MangaDetailsModel {
+class MangaDetailsModel extends Equatable {
   final int malId;
   final String status;
   final String title;
@@ -28,4 +29,8 @@ class MangaDetailsModel {
           json['genres']?.map((x) => GenreModel.fromJson(x)) ?? []),
     );
   }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [malId];
 }

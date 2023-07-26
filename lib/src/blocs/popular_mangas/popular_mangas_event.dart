@@ -6,4 +6,6 @@ abstract class PopularMangaEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class LoadPopularMangaEvent extends PopularMangaEvent {}
+class PopularMangaInitialEvent extends PopularMangaEvent {}
+
+class LoadMorePopularMangaEvent extends PopularMangaEvent {}

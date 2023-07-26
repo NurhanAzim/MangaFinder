@@ -22,7 +22,7 @@ class DioClient {
         '${ApiConstants.baseUrl}/$path/manga',
         queryParameters: {
           'page': page,
-          'sfw': 'true',
+          'sfw': true,
         },
       );
       return response;

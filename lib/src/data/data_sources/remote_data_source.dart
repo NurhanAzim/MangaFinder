@@ -22,10 +22,13 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   Future<List<MangaModel>> getPopular({required int page}) async {
     try {
       final response = await _dioClient.get(page: page, path: 'top');
-      final mangas = response.data['data']
-          .map<MangaModel>((json) => MangaModel.fromPopularJson(json))
-          .toList();
-      return mangas;
+      if (response.statusCode == 200) {
+        final mangas = response.data['data']
+            .map<MangaModel>((json) => MangaModel.fromPopularJson(json))
+            .toList();
+        return mangas;
+      }
+      throw Exception('Some error occurred');
     } catch (e) {
       rethrow;
     }
@@ -36,10 +39,13 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     try {
       final response =
           await _dioClient.get(page: page, path: 'recommendations');
-      final mangas = response.data['data']
-          .map<MangaModel>((json) => MangaModel.fromTrendingJson(json))
-          .toList();
-      return mangas;
+      if (response.statusCode == 200) {
+        final mangas = response.data['data']
+            .map<MangaModel>((json) => MangaModel.fromTrendingJson(json))
+            .toList();
+        return mangas;
+      }
+      throw Exception('Some error occurred');
     } catch (e) {
       rethrow;
     }

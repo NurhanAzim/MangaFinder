@@ -22,13 +22,13 @@ class PopularMangaBloc extends Bloc<PopularMangaEvent, PopularMangaState> {
   int limit = 5;
 
   PopularMangaBloc(this._repo) : super(const PopularMangaState()) {
-    on<LoadPopularMangaEvent>(_loadPopularMangaEvent,
+    on<PopularMangaInitialEvent>(_popularMangaInitialEvent);
+    on<LoadMorePopularMangaEvent>(_loadMorePopularMangaEvent,
         transformer: throttleDroppable(throttleDuration));
   }
 
-  Future<void> _loadPopularMangaEvent(
-      LoadPopularMangaEvent event, Emitter<PopularMangaState> emit) async {
-    if (state.hasReachedMax) return;
+  FutureOr<void> _popularMangaInitialEvent(
+      PopularMangaInitialEvent event, Emitter<PopularMangaState> emit) async {
     if (state.status == StateStatus.initial) {
       try {
         final mangas = await _repo.getPopular(page: page);
@@ -46,7 +46,11 @@ class PopularMangaBloc extends Bloc<PopularMangaEvent, PopularMangaState> {
         ));
       }
     }
+  }
 
+  Future<void> _loadMorePopularMangaEvent(
+      LoadMorePopularMangaEvent event, Emitter<PopularMangaState> emit) async {
+    if (state.hasReachedMax) return;
     if (page <= limit) {
       try {
         final mangas = await _repo.getPopular(page: page);

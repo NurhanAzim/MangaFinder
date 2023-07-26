@@ -9,7 +9,7 @@ import '../../../../utils/services/database_service.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/custom_text.dart';
 
-class LibraryCard extends StatelessWidget {
+class LibraryCard extends StatefulWidget {
   const LibraryCard({
     super.key,
     required this.title,
@@ -24,6 +24,11 @@ class LibraryCard extends StatelessWidget {
   final int malId;
 
   @override
+  State<LibraryCard> createState() => _LibraryCardState();
+}
+
+class _LibraryCardState extends State<LibraryCard> {
+  @override
   Widget build(BuildContext context) {
     return Card(
       color: Theme.of(context).cardColor,
@@ -37,7 +42,7 @@ class LibraryCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CachedNetworkImage(
-              imageUrl: imageUrl,
+              imageUrl: widget.imageUrl,
               imageBuilder: (context, imageProvider) {
                 return Container(
                   width: 30.w,
@@ -73,7 +78,7 @@ class LibraryCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomText(
-                  title: title,
+                  title: widget.title,
                   size: 10,
                   color: AppColors.platinumGray,
                   textAlign: TextAlign.start,
@@ -88,7 +93,7 @@ class LibraryCard extends StatelessWidget {
                           fontWeight: FontWeight.w900),
                       children: [
                         TextSpan(
-                            text: synopsis,
+                            text: widget.synopsis,
                             style: Theme.of(context)
                                 .textTheme
                                 .titleMedium!
@@ -110,12 +115,12 @@ class LibraryCard extends StatelessWidget {
                       height: 15,
                       label: '+ Details',
                       onPressed: () {
-                        context.push(AppRoute.details, extra: malId);
+                        context.push(AppRoute.details, extra: widget.malId);
                       },
                     ),
                     IconButton(
                         onPressed: () {
-                          DatabaseService().deleteManga(malId).then((_) {
+                          DatabaseService().deleteManga(widget.malId).then((_) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text('Manga Removed'),
@@ -128,6 +133,7 @@ class LibraryCard extends StatelessWidget {
                               ),
                             );
                           });
+                          setState(() {});
                         },
                         icon: Icon(Icons.delete)),
                   ],

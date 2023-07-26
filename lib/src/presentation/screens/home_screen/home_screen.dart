@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _onPopularMangaScroll() async {
     if (_popularMangaController.position.atEdge) {
       if (_popularMangaController.position.pixels != 0 && isOnline) {
-        context.read<PopularMangaBloc>().add(LoadPopularMangaEvent());
+        context.read<PopularMangaBloc>().add(LoadMorePopularMangaEvent());
       }
     }
   }
@@ -80,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: RefreshIndicator(
         onRefresh: () {
           context.read<RandomMangaBloc>().add(LoadRandomMangaEvent());
-          context.read<PopularMangaBloc>().add(LoadPopularMangaEvent());
+          context.read<PopularMangaBloc>().add(PopularMangaInitialEvent());
           context.read<TrendingMangaBloc>().add(LoadTrendingMangaEvent());
           return Future.delayed(const Duration(seconds: 2));
         },

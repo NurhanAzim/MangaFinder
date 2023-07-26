@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:manga_finder/src/blocs/library_mangas/library_manga_bloc.dart';
 import 'package:manga_finder/src/blocs/manga_character/manga_character_bloc.dart';
 import 'package:manga_finder/src/blocs/manga_details/manga_details_bloc.dart';
 import 'package:manga_finder/src/blocs/manga_images/manga_images_bloc.dart';
@@ -11,6 +12,7 @@ import 'package:manga_finder/src/data/core/dio_client.dart';
 import 'package:manga_finder/src/data/data_sources/local_data_source.dart';
 import 'package:manga_finder/src/data/data_sources/remote_data_source.dart';
 import 'package:manga_finder/src/data/repositories/manga_repo_impl.dart';
+import 'package:manga_finder/src/utils/services/database_service.dart';
 
 final gI = GetIt.I;
 
@@ -22,6 +24,8 @@ Future init() async {
   gI.registerLazySingleton<RemoteDataSource>(() => RemoteDataSourceImpl(gI()));
 
   gI.registerLazySingleton<LocalDataSource>(() => LocalDataSourceImpl());
+
+  gI.registerLazySingleton<DatabaseService>(() => DatabaseService());
 
   final networkInfo = InternetConnectionChecker();
 
@@ -35,4 +39,5 @@ Future init() async {
   gI.registerFactory(() => MangaDetailsBloc(gI()));
   gI.registerFactory(() => MangaImagesBloc(gI()));
   gI.registerFactory(() => MangaCharacterBloc(gI()));
+  gI.registerFactory(() => LibraryMangaBloc(gI()));
 }
