@@ -14,7 +14,10 @@ import 'widgets/custom_flexible_spacebar.dart';
 import 'widgets/sliverlist_item.dart';
 
 class DetailsScreen extends StatefulWidget {
-  const DetailsScreen({super.key, required this.id});
+  const DetailsScreen({
+    super.key,
+    required this.id,
+  });
   final int id;
 
   @override

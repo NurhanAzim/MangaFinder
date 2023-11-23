@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:manga_finder/src/utils/extensions/extensions.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../config/app_route.dart';
@@ -120,22 +121,30 @@ class _LibraryCardState extends State<LibraryCard> {
                     ),
                     IconButton(
                         onPressed: () {
-                          DatabaseService().deleteManga(widget.malId).then((_) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Manga Removed'),
-                              ),
-                            );
-                          }).catchError((error) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Failed to Remove Manga: $error'),
-                              ),
-                            );
-                          });
-                          setState(() {});
+                          context.showDialogBox(
+                              title: 'Remove Manga',
+                              description: 'Are you sure to remove this?',
+                              action: () {
+                                DatabaseService()
+                                    .deleteManga(widget.malId)
+                                    .then((_) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text('${widget.title} Removed'),
+                                    ),
+                                  );
+                                }).catchError((error) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                          'Failed to Remove Manga: $error'),
+                                    ),
+                                  );
+                                });
+                                setState(() {});
+                              });
                         },
-                        icon: Icon(Icons.delete)),
+                        icon: const Icon(Icons.delete)),
                   ],
                 ))
               ],

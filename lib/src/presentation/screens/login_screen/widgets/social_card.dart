@@ -1,38 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
 
-class SocialCard extends StatelessWidget {
+class SocialSignInButton extends StatelessWidget {
+  final String provider;
   final String img;
   final void Function() func;
-  const SocialCard({super.key, required this.img, required this.func});
+  const SocialSignInButton(
+      {super.key,
+      required this.img,
+      required this.func,
+      required this.provider});
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).textTheme.displayLarge!.color,
-            borderRadius: BorderRadius.circular(15),
-          ),
-          padding: const EdgeInsets.all(29.8),
+    return ElevatedButton.icon(
+        onPressed: func,
+        icon: SizedBox(
+          height: 20,
+          width: 20,
+          child: Image.network(img),
         ),
-        InkWell(
-          onTap: func,
-          child: Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).cardColor,
-              borderRadius: BorderRadius.circular(15),
-            ),
-            padding: const EdgeInsets.all(15),
-            child: Image.asset(
-              img,
-              height: 4.h,
-            ),
-          ),
-        ),
-      ],
-    );
+        label: Text('Continue with $provider'));
   }
 }

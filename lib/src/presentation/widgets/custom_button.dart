@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:manga_finder/src/constants/app_colors.dart';
 
 class CustomButton extends StatelessWidget {
   const CustomButton({
     super.key,
     this.onPressed,
     this.shape = const StadiumBorder(),
-    required this.backgroundColor,
-    this.foregroundColor,
+    this.backgroundColor = AppColors.electricRuby,
+    this.foregroundColor = AppColors.platinumGray,
     required this.width,
     required this.height,
     required this.label,

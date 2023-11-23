@@ -39,7 +39,9 @@ class AppRoute {
         path: details,
         builder: (context, state) {
           final id = state.extra as int;
-          return DetailsScreen(id: id);
+          return DetailsScreen(
+            id: id,
+          );
         },
       ),
       GoRoute(

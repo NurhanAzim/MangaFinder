@@ -45,7 +45,7 @@ class CustomFlexibleSpaceBar extends StatelessWidget {
                   maxLines: 4,
                   horizontalPadding: 20,
                 ),
-                GenresListView(manga: manga),
+                GenresListView(genres: manga.genres),
                 SizedBox(height: 2.h),
                 Builder(builder: (context) {
                   switch (manga.status) {

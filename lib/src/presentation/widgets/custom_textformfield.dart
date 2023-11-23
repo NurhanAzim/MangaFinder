@@ -8,7 +8,7 @@ class CustomTextFormField extends StatelessWidget {
     required this.isSuffix,
     required this.icon,
     required this.controller,
-    this.hideText,
+    this.obscureText = false,
     this.validator,
     this.onChange,
     this.onSubmit,
@@ -21,7 +21,7 @@ class CustomTextFormField extends StatelessWidget {
   final TextEditingController controller;
   final FormFieldValidator<String>? validator;
   final TextInputType keyboardType;
-  final bool? hideText;
+  final bool? obscureText;
   final void Function(String)? onChange;
   final void Function(String)? onSubmit;
 
@@ -63,6 +63,7 @@ class CustomTextFormField extends StatelessWidget {
               )
             : null,
       ),
+      obscureText: obscureText as bool,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: validator,
     );

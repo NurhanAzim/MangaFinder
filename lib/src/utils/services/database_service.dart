@@ -42,7 +42,7 @@ class DatabaseService {
           .select()
           .eq('user_id', userId)
           .eq('manga_id', malId)
-          .maybeSingle();
+          .maybeSingle(); //result 1 or 0
 
       return response != null;
     } on PostgrestException catch (e) {

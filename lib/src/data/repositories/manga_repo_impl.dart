@@ -62,20 +62,21 @@ class MangaRepoImpl implements MangaRepository {
 
   @override
   Future<List<MangaModel>> getRandom({required int page}) async {
-    try {
-      if (await internetConnectionChecker.hasConnection) {
-        final mangas = await remoteDataSource.getRandom(page: page);
-        await localDataSource.cache(
-            key: cachedRandomMangas, mangas: mangas, page: page);
-        return mangas;
-      } else {
-        final cachedMangas =
-            await localDataSource.get(key: cachedRandomMangas, page: page);
-        return cachedMangas;
-      }
-    } catch (_) {
-      rethrow;
-    }
+    // try {
+    //   if (await internetConnectionChecker.hasConnection) {
+    //     final mangas = await remoteDataSource.getRandom(page: page);
+    //     await localDataSource.cache(
+    //         key: cachedRandomMangas, mangas: mangas, page: page);
+    //     return mangas;
+    //   } else {
+    //     final cachedMangas =
+    //         await localDataSource.get(key: cachedRandomMangas, page: page);
+    //     return cachedMangas;
+    //   }
+    // } catch (_) {
+    //   rethrow;
+    // }
+    return [];
   }
 
   @override

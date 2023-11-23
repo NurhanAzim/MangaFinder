@@ -25,21 +25,22 @@ class TrendingMangaBloc extends Bloc<TrendingMangaEvent, TrendingMangaState> {
   int limit = 5;
 
   TrendingMangaBloc(this._repo) : super(const TrendingMangaState()) {
-    on<LoadTrendingMangaEvent>(_loadTrendingMangaEvent,
+    on<TrendingMangaInitialEvent>(_trendingMangaInitialEvent);
+    on<LoadMoreTrendingMangaEvent>(_loadTrendingMangaEvent,
         transformer: throttleDroppable(throttleDuration));
   }
 
-  FutureOr<void> _loadTrendingMangaEvent(
-      LoadTrendingMangaEvent event, Emitter<TrendingMangaState> emit) async {
-    if (state.hasReachedMax) return;
+  FutureOr<void> _trendingMangaInitialEvent(
+      TrendingMangaInitialEvent event, Emitter<TrendingMangaState> emit) async {
     if (state.status == StateStatus.initial) {
       try {
         final mangas = await _repo.getTrending(page: page);
+
         page = page + 1;
         return emit(const TrendingMangaState().copyWith(
           status: StateStatus.success,
-          hasReachedMax: false,
           trendingMangas: mangas,
+          hasReachedMax: false,
         ));
       } catch (e) {
         return emit(const TrendingMangaState().copyWith(
@@ -48,8 +49,13 @@ class TrendingMangaBloc extends Bloc<TrendingMangaEvent, TrendingMangaState> {
         ));
       }
     }
+  }
 
-    if (page <= 1) {
+  FutureOr<void> _loadTrendingMangaEvent(LoadMoreTrendingMangaEvent event,
+      Emitter<TrendingMangaState> emit) async {
+    if (state.hasReachedMax) return;
+
+    if (page <= limit) {
       try {
         final mangas = await _repo.getTrending(page: page);
         page = page + 1;

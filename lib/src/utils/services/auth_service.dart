@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthService {
@@ -7,7 +9,8 @@ class AuthService {
 
   Future<void> signInWithGoogle() async {
     try {
-      await _auth.signInWithOAuth(Provider.google);
+      await _auth.signInWithOAuth(Provider.google,
+          redirectTo: kIsWeb ? null : dotenv.env['SUPABASE_REDIRECT_URL']);
     } catch (e) {
       throw e.toString();
     }

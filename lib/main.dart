@@ -46,10 +46,10 @@ void main() async {
           create: (_) => AuthenticationBloc(),
         ),
         BlocProvider<PopularMangaBloc>(
-          create: (_) => get_it.gI()..add(LoadMorePopularMangaEvent()),
+          create: (_) => get_it.gI()..add(PopularMangaInitialEvent()),
         ),
         BlocProvider<TrendingMangaBloc>(
-          create: (_) => get_it.gI()..add(LoadTrendingMangaEvent()),
+          create: (_) => get_it.gI()..add(TrendingMangaInitialEvent()),
         ),
         BlocProvider<RandomMangaBloc>(
             create: (_) => get_it.gI()..add(LoadRandomMangaEvent())),
